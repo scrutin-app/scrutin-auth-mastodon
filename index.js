@@ -9,7 +9,8 @@ const app = express();
 // Set up routes
 
 app.get('/', (req, res) => {
-  const redirectUri = encodeURIComponent(`https://${req.headers.host}/callback`);
+  //const redirectUri = encodeURIComponent(`https://${req.headers.host}/callback`);
+  const redirectUri = encodeURIComponent(`urn:ietf:wg:oauth:2.0:oob`);
   const mastodonAuthUrl = `https://${process.env.MASTODON_INSTANCE}/oauth/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}`;
   const html = `
     <html>
