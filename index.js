@@ -11,7 +11,8 @@ const app = express();
 app.get('/', (req, res) => {
   //const redirectUri = encodeURIComponent(`https://${req.headers.host}/callback`);
   const redirectUri = encodeURIComponent(`urn:ietf:wg:oauth:2.0:oob`);
-  const mastodonAuthUrl = `https://${process.env.MASTODON_INSTANCE}/oauth/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}`;
+  const scopes = encodeURIComponent('read:accounts');
+  const mastodonAuthUrl = `https://${process.env.MASTODON_INSTANCE}/oauth/authorize?client_id=${process.env.CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes}`;
   const html = `
     <html>
       <body>
@@ -34,6 +35,9 @@ app.get('/callback', async (req, res) => {
     client_secret: process.env.CLIENT_SECRET,
     redirect_uri: redirectUri
   });
+
+  console.log("Client secret")
+  console.log(process.env.CLIENT_SECRET)
 
   try {
     const response = await axios.post(`https://${process.env.MASTODON_INSTANCE}/oauth/token`, tokenParams);
